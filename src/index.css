@@ -1,0 +1,222 @@
+
+:root {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #17283a;
+  background: #f2f5f8;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 20px 6%;
+  border-bottom: 3px solid #c9a84e;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.simbolo {
+  background: #10243b;
+  color: #c9a84e;
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+}
+
+.marca small {
+  color: #987b34;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.marca h1 {
+  color: #10243b;
+  margin: 4px 0;
+  font-size: 25px;
+}
+
+.etiqueta {
+  color: #657487;
+  font-size: 13px;
+}
+
+.principal {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 60px;
+  max-width: 1250px;
+  margin: 55px auto;
+  padding: 0 25px;
+  align-items: start;
+}
+
+.presentacion {
+  background: linear-gradient(135deg, #10243b, #173956);
+  border-radius: 18px;
+  padding: 55px 45px;
+  color: white;
+  min-height: 490px;
+}
+
+.sobretitulo {
+  color: #c9a84e;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+
+.presentacion h2 {
+  font-size: 42px;
+  line-height: 1.15;
+  margin: 24px 0;
+}
+
+.presentacion p {
+  color: #d9e4ed;
+  line-height: 1.8;
+}
+
+.caracteristicas {
+  display: grid;
+  gap: 15px;
+  margin-top: 35px;
+  color: #e8d49b;
+}
+
+.acceso {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid #d9e1e8;
+  box-shadow: 0 12px 35px #10243b12;
+}
+
+.pestanas, .roles {
+  display: flex;
+  gap: 10px;
+}
+
+.pestanas button, .roles button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d9e1e8;
+  background: #f2f5f8;
+  color: #173956;
+  font-weight: bold;
+}
+
+.pestanas .activo, .roles .seleccionado {
+  background: #10243b;
+  border-color: #10243b;
+  color: white;
+}
+
+.acceso h2 {
+  margin: 25px 0 5px;
+  color: #10243b;
+}
+
+.subtexto {
+  font-size: 13px;
+  color: #657487;
+  margin-bottom: 20px;
+}
+
+.acceso form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 22px;
+}
+
+.acceso label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #526579;
+  margin: 10px 0 5px;
+}
+
+.acceso input, .acceso select {
+  padding: 12px;
+  border: 1px solid #cfd8e0;
+  border-radius: 7px;
+  background: white;
+  color: #17283a;
+  width: 100%;
+}
+
+.boton-principal {
+  margin-top: 24px;
+  padding: 14px;
+  background: #c9a84e;
+  color: #10243b;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.aviso {
+  background: #fbf7e9;
+  border-left: 4px solid #c9a84e;
+  padding: 12px;
+  color: #65552d;
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+.pie-acceso {
+  text-align: center;
+  font-size: 11px;
+  color: #657487;
+  margin-top: 25px;
+}
+
+@media (max-width: 900px) {
+  .principal {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-top: 25px;
+  }
+
+  .presentacion {
+    min-height: auto;
+    padding: 35px 25px;
+  }
+
+  .presentacion h2 {
+    font-size: 30px;
+  }
+
+  .etiqueta {
+    display: none;
+  }
+
+  .marca h1 {
+    font-size: 20px;
+  }
+}
