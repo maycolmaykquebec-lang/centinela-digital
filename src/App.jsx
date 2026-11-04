@@ -1,16 +1,127 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from './lib/supabase'
+import './index.css'
 
 function App() {
   const [modo, setModo] = useState('ingresar')
   const [rol, setRol] = useState('tropa')
+  const [sesion, setSesion] = useState(null)
+  const [perfil, setPerfil] = useState(null)
+  const [capitulos, setCapitulos] = useState([])
   const [mensaje, setMensaje] = useState('')
+  const [cargando, setCargando] = useState(false)
 
-  function enviarFormulario(evento) {
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setSesion(data.session)
+    })
+
+    const { data: { subscription } } =
+      supabase.auth.onAuthStateChange((_evento, session) => {
+        setSesion(session)
+      })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  useEffect(() => {
+    if (!sesion?.user) {
+      setPerfil(null)
+      setCapitulos([])
+      return
+    }
+
+    let activo = true
+
+    async function cargarDatos() {
+      const [respuestaPerfil, respuestaCapitulos] =
+        await Promise.all([
+          supabase
+            .from('profiles')
+            .select('first_name,last_name,role,approval_status')
+            .eq('id', sesion.user.id)
+            .single(),
+
+          supabase
+            .from('chapters')
+            .select('id,title,summary')
+            .order('id')
+        ])
+
+      if (!activo) return
+
+      if (respuestaPerfil.error) {
+        setMensaje(respuestaPerfil.error.message)
+      } else {
+        setPerfil(respuestaPerfil.data)
+      }
+
+      if (respuestaCapitulos.error) {
+        setMensaje(respuestaCapitulos.error.message)
+      } else {
+        setCapitulos(respuestaCapitulos.data || [])
+      }
+    }
+
+    cargarDatos()
+    return () => { activo = false }
+  }, [sesion?.user?.id])
+
+  async function enviarFormulario(evento) {
     evento.preventDefault()
-    setMensaje(
-      'Esta es una demostración visual. Conectaremos el registro y el inicio de sesión a Supabase.'
-    )
+    setCargando(true)
+    setMensaje('')
+
+    const datos = new FormData(evento.currentTarget)
+    const email = String(datos.get('email')).trim()
+    const password = String(datos.get('password'))
+
+    try {
+      if (modo === 'registro') {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              requested_role: rol,
+              first_name: datos.get('first_name'),
+              last_name: datos.get('last_name'),
+              large_unit: datos.get('large_unit'),
+              small_unit: datos.get('small_unit'),
+              company: datos.get('company'),
+              category: rol === 'tropa'
+                ? datos.get('category') : ''
+            }
+          }
+        })
+
+        if (error) throw error
+
+        setMensaje(
+          data.session
+            ? 'Cuenta creada correctamente.'
+            : 'Solicitud recibida. Revisa tu correo para confirmar la cuenta, si corresponde.'
+        )
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        })
+
+        if (error) throw error
+        setMensaje('Inicio de sesión correcto.')
+      }
+    } catch (error) {
+      setMensaje(`Error: ${error.message}`)
+    } finally {
+      setCargando(false)
+    }
+  }
+
+  async function cerrarSesion() {
+    await supabase.auth.signOut()
+    setMensaje('')
   }
 
   return (
@@ -23,19 +134,22 @@ function App() {
             <h1>CENTINELA DIGITAL</h1>
           </div>
         </div>
-        <span className="etiqueta">Sistema educativo institucional</span>
+        <span className="etiqueta">
+          Sistema educativo institucional
+        </span>
       </header>
 
       <main className="principal">
         <section className="presentacion">
-          <span className="sobretitulo">FORMACIÓN INTERACTIVA</span>
+          <span className="sobretitulo">
+            FORMACIÓN INTERACTIVA
+          </span>
           <h2>El conocimiento también protege.</h2>
           <p>
-            Una nueva experiencia de aprendizaje para la formación
-            integral de la tropa, mediante lecciones, actividades
-            interactivas y seguimiento académico.
+            Plataforma de aprendizaje para la formación
+            integral de la tropa, con lecciones interactivas,
+            evaluaciones y seguimiento académico.
           </p>
-
           <div className="caracteristicas">
             <div>✓ Nueve capítulos de enseñanza</div>
             <div>✓ Actividades interactivas</div>
@@ -45,114 +159,153 @@ function App() {
         </section>
 
         <section className="acceso">
-          <div className="pestanas">
-            <button
-              className={modo === 'ingresar' ? 'activo' : ''}
-              onClick={() => { setModo('ingresar'); setMensaje('') }}
-            >
-              Iniciar sesión
-            </button>
-            <button
-              className={modo === 'registro' ? 'activo' : ''}
-              onClick={() => { setModo('registro'); setMensaje('') }}
-            >
-              Registrarse
-            </button>
-          </div>
+          {sesion ? (
+            <>
+              <h2>Bienvenido a CENTINELA DIGITAL</h2>
+              <p>Correo: {sesion.user.email}</p>
 
-          <h2>{modo === 'ingresar' ? 'Bienvenido' : 'Crear cuenta'}</h2>
-          <p className="subtexto">
-            Selecciona tu perfil para continuar.
-          </p>
+              {perfil && (
+                <>
+                  <p>
+                    Nombre: {perfil.first_name} {perfil.last_name}
+                  </p>
+                  <p>Perfil: {perfil.role.toUpperCase()}</p>
+                  <p>
+                    Estado: {perfil.approval_status}
+                  </p>
+                </>
+              )}
 
-          <div className="roles">
-            <button
-              className={rol === 'tropa' ? 'seleccionado' : ''}
-              onClick={() => setRol('tropa')}
-            >
-              ⚓ TROPA
-            </button>
-            <button
-              className={rol === 'instructor' ? 'seleccionado' : ''}
-              onClick={() => setRol('instructor')}
-            >
-              ♙ INSTRUCTOR
-            </button>
-          </div>
+              <h3>Capítulos disponibles</h3>
+              <p>Capítulos cargados desde Supabase: {capitulos.length}</p>
 
-          <form onSubmit={enviarFormulario}>
-            {modo === 'registro' && (
-              <>
-                <label>Nombres</label>
-                <input required placeholder="Nombres" />
+              {capitulos.map(capitulo => (
+                <div className="aviso" key={capitulo.id}>
+                  <strong>
+                    {capitulo.id}. {capitulo.title}
+                  </strong>
+                </div>
+              ))}
 
-                <label>Apellidos</label>
-                <input required placeholder="Apellidos" />
+              <button
+                className="boton-principal"
+                onClick={cerrarSesion}
+              >
+                Cerrar sesión
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="pestanas">
+                <button
+                  className={modo === 'ingresar' ? 'activo' : ''}
+                  onClick={() => {
+                    setModo('ingresar')
+                    setMensaje('')
+                  }}
+                >
+                  Iniciar sesión
+                </button>
 
-                <label>Gran Unidad</label>
-                <input required placeholder="Gran Unidad" />
+                <button
+                  className={modo === 'registro' ? 'activo' : ''}
+                  onClick={() => {
+                    setModo('registro')
+                    setMensaje('')
+                  }}
+                >
+                  Registrarse
+                </button>
+              </div>
 
-                <label>Pequeña Unidad</label>
-                <input required placeholder="Pequeña Unidad" />
+              <h2>
+                {modo === 'registro' ? 'Crear cuenta' : 'Bienvenido'}
+              </h2>
 
-                <label>Compañía</label>
-                <input required placeholder="Compañía" />
-
-                {rol === 'tropa' && (
+              <form onSubmit={enviarFormulario}>
+                {modo === 'registro' && (
                   <>
-                    <label>Número de instruido</label>
-                    <input
-                      required
-                      type="number"
-                      min="1"
-                      max="81"
-                      placeholder="01 al 81"
-                    />
+                    <div className="roles">
+                      <button
+                        type="button"
+                        className={rol === 'tropa' ? 'seleccionado' : ''}
+                        onClick={() => setRol('tropa')}
+                      >
+                        ⚓ TROPA
+                      </button>
+                      <button
+                        type="button"
+                        className={rol === 'instructor' ? 'seleccionado' : ''}
+                        onClick={() => setRol('instructor')}
+                      >
+                        ♙ INSTRUCTOR
+                      </button>
+                    </div>
 
-                    <label>Categoría</label>
-                    <select required>
-                      <option>Marinero</option>
-                      <option>Alumno</option>
-                      <option>Cadete</option>
-                      <option>Premilitar</option>
-                    </select>
+                    <label>Nombres</label>
+                    <input name="first_name" required />
+
+                    <label>Apellidos</label>
+                    <input name="last_name" required />
+
+                    <label>Gran Unidad</label>
+                    <input name="large_unit" required />
+
+                    <label>Pequeña Unidad</label>
+                    <input name="small_unit" required />
+
+                    <label>Compañía</label>
+                    <input name="company" required />
+
+                    {rol === 'tropa' && (
+                      <>
+                        <label>Categoría</label>
+                        <select name="category" required>
+                          <option value="">Seleccione</option>
+                          <option>Marinero</option>
+                          <option>Alumno</option>
+                          <option>Cadete</option>
+                          <option>Premilitar</option>
+                        </select>
+                      </>
+                    )}
+
+                    {rol === 'instructor' && (
+                      <p className="aviso">
+                        Tu cuenta necesitará aprobación
+                        de un administrador.
+                      </p>
+                    )}
                   </>
                 )}
-              </>
-            )}
 
-            <label>Correo electrónico</label>
-            <input
-              type="email"
-              placeholder="correo@ejemplo.com"
-              required
-            />
+                <label>Correo electrónico</label>
+                <input name="email" type="email" required />
 
-            <label>Contraseña</label>
-            <input
-              type="password"
-              minLength="8"
-              placeholder="Mínimo 8 caracteres"
-              required
-            />
+                <label>Contraseña</label>
+                <input
+                  name="password"
+                  type="password"
+                  minLength="8"
+                  required
+                />
 
-            {modo === 'registro' && rol === 'instructor' && (
-              <p className="aviso">
-                La cuenta de instructor necesitará aprobación
-                de un administrador.
-              </p>
-            )}
-
-            <button className="boton-principal" type="submit">
-              {modo === 'ingresar' ? 'Ingresar' : 'Crear cuenta'}
-            </button>
-          </form>
+                <button
+                  className="boton-principal"
+                  type="submit"
+                  disabled={cargando}
+                >
+                  {cargando
+                    ? 'Procesando...'
+                    : modo === 'registro'
+                      ? 'Crear cuenta'
+                      : 'Iniciar sesión'}
+                </button>
+              </form>
+            </>
+          )}
 
           {mensaje && <p className="aviso">{mensaje}</p>}
-
-          <p className="pie-acceso">
-            CENTINELA DIGITAL · Formación y conocimiento
-          </p>
         </section>
       </main>
     </div>
