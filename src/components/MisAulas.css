@@ -1,0 +1,39 @@
+/* Fase 3 — gestión de aulas. Estilos aislados: no modifica Dashboard.css */
+.cd-aulas { display: flex; flex-direction: column; gap: 16px; }
+.cd-aulas-cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; }
+.cd-aulas-cabecera h2 { margin: 4px 0 7px; color: var(--cd-azul); font-size: 24px; }
+.cd-aulas-cabecera p, .cd-aulas-formulario > p { margin: 0; color: #5d7186; font-size: 13px; line-height: 1.55; }
+.cd-aulas-etiqueta { color: #92732b; letter-spacing: 1.1px; font-size: 10px; font-weight: 800; }
+.cd-aulas-refrescar { border: 1px solid var(--cd-borde); background: white; color: var(--cd-azul); font-weight: 700; padding: 10px 13px; border-radius: 8px; }
+.cd-aulas-refrescar:disabled { opacity: .6; cursor: wait; }
+.cd-aulas-formulario,.cd-aulas-listado { background: #fff; border: 1px solid var(--cd-borde); border-radius: 10px; padding: 22px; }
+.cd-aulas-formulario h3,.cd-aulas-listado h3 { color: var(--cd-azul); margin: 0 0 7px; font-size: 19px; }
+.cd-aulas-campos { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-top: 18px; }
+.cd-aulas-campo { display: flex; flex-direction: column; gap: 7px; font-size: 12px; font-weight: 800; color: #304c64; }
+.cd-aulas-campo-ancho { grid-column: 1 / -1; }
+.cd-aulas-campo input { width: 100%; background: white; border: 1px solid #ccd8e3; padding: 12px; border-radius: 7px; font: inherit; font-size: 14px; font-weight: 400; color: #17283a; min-width: 0; }
+.cd-aulas-campo input:focus-visible { outline: 2px solid var(--cd-dorado); outline-offset: 1px; }
+.cd-aulas-crear { margin-top: 16px; background: var(--cd-dorado); color: var(--cd-azul); border: 0; font-weight: 800; padding: 12px 22px; border-radius: 7px; }
+.cd-aulas-crear:disabled { opacity: .6; cursor: wait; }
+.cd-aulas-exito { margin-top: 16px; background: #eaf6ee; border: 1px solid #b9dfc5; border-radius: 8px; padding: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; color: #245538; }
+.cd-aulas-exito code { font-size: 17px; letter-spacing: 1.4px; }
+.cd-aulas-exito button,.cd-aulas-codigo button { border: 1px solid #b4c4d1; border-radius: 6px; padding: 7px 10px; background: white; color: var(--cd-azul); font-weight: 700; }
+.cd-aulas-mensaje { color: #305b3c; font-size: 12px; margin: 11px 0 0; }
+.cd-aulas-error { background: #fff0ef; color: #963b32; padding: 12px; border-left: 4px solid #c65649; border-radius: 5px; font-size: 12px; }
+.cd-aulas-subtitulo { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 13px; }
+.cd-aulas-subtitulo span { color: #657487; font-size: 12px; }
+.cd-aulas-vacio { margin: 0; color: #657487; padding: 25px 12px; text-align: center; border: 1px dashed var(--cd-borde); border-radius: 8px; }
+.cd-aulas-tarjetas { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.cd-aulas-tarjeta { border: 1px solid var(--cd-borde); border-top: 3px solid var(--cd-dorado); border-radius: 8px; padding: 17px; min-width: 0; }
+.cd-aulas-tarjeta-cabecera { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.cd-aulas-tarjeta h4 { font-size: 16px; margin: 0 0 14px; color: var(--cd-azul); overflow-wrap: anywhere; }
+.cd-aulas-tarjeta p { color: #53677b; line-height: 1.5; font-size: 12px; margin: 6px 0; overflow-wrap: anywhere; }
+.cd-aulas-activa,.cd-aulas-inactiva { font-size: 11px; padding: 4px 8px; border-radius: 20px; font-weight: 700; white-space: nowrap; }
+.cd-aulas-activa { background: #e8f5ed; color: #276440; }
+.cd-aulas-inactiva { background: #f7eded; color: #874640; }
+.cd-aulas-codigo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; background: #f4f6f8; border-radius: 7px; padding: 11px; margin-top: 13px; }
+.cd-aulas-codigo span { color: #62758a; font-size: 11px; width: 100%; }
+.cd-aulas-codigo strong { color: var(--cd-azul); letter-spacing: 2px; font-size: 19px; margin-right: auto; }
+.cd-aulas-inscritos { border-top: 1px solid #e4eaf0; padding-top: 10px; }
+@media (max-width: 850px) { .cd-aulas-tarjetas { grid-template-columns: 1fr; } }
+@media (max-width: 630px) { .cd-aulas-campos { grid-template-columns: 1fr; } .cd-aulas-cabecera { flex-direction: column; } .cd-aulas-formulario,.cd-aulas-listado { padding: 15px; } }
