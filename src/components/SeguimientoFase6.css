@@ -1,0 +1,46 @@
+.cd6{max-width:1240px;margin:0 auto;color:#112a43;font-size:14px}
+.cd6 *{box-sizing:border-box}
+.cd6-hero{background:linear-gradient(110deg,#122940,#254f6c);color:#fff;border-radius:13px;padding:25px 30px;margin-bottom:17px}
+.cd6-hero>span{font-size:11px;font-weight:800;letter-spacing:1.6px;color:#e0bd58}
+.cd6-hero h2{font-size:26px;margin:10px 0 7px}
+.cd6-hero p{margin:0;color:#e9eff5;line-height:1.6}
+.cd6-superior{background:#fff;padding:18px 22px;border:1px solid #d7e3eb;border-radius:12px;display:flex;gap:18px;justify-content:space-between;align-items:end;margin-bottom:17px}
+.cd6-superior label,.cd6-titulo-tabla label{display:flex;flex-direction:column;gap:7px;font-weight:700;font-size:12px}
+.cd6-superior select,.cd6-titulo-tabla input{min-width:255px;max-width:100%;background:#fff;border:1px solid #b6c9d5;border-radius:8px;min-height:42px;padding:9px 11px;font:inherit;color:#12334b}
+.cd6-acciones{display:flex;gap:9px;flex-wrap:wrap}
+.cd6-boton,.cd6-boton-sec{font:inherit;font-weight:700;cursor:pointer;padding:10px 13px;border-radius:8px;min-height:40px}
+.cd6-boton{background:#173b55;color:#fff;border:1px solid #173b55}
+.cd6-boton-sec{background:#f3f7fa;border:1px solid #b8cad7;color:#1a4561}
+.cd6-boton:hover{background:#245879}
+.cd6-boton-sec:hover{background:#e7f1f7}
+.cd6-boton:disabled,.cd6-boton-sec:disabled{opacity:.5;cursor:not-allowed}
+.cd6-metricas{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-bottom:18px}
+.cd6-metricas article{background:#fff;border:1px solid #d9e5ed;border-top:3px solid #c5a14a;border-radius:10px;padding:15px 13px;min-width:0}
+.cd6-metricas span{display:block;color:#526a7d;font-size:12px;font-weight:700;min-height:31px}
+.cd6-metricas strong{display:block;font-size:25px;color:#173b55;margin:6px 0}
+.cd6-metricas small{font-size:11px;color:#65798a}
+.cd6-panel{background:#fff;border:1px solid #d9e5ed;border-radius:12px;padding:21px 23px;margin-bottom:17px;box-shadow:0 3px 10px #173b550c}
+.cd6-titulo-tabla{display:flex;justify-content:space-between;gap:22px;align-items:start;margin-bottom:16px}
+.cd6-titulo-tabla h3{font-size:19px;margin:0 0 5px;color:#112a43}
+.cd6-titulo-tabla p{margin:0;line-height:1.5;color:#5f7385}
+.cd6-desborde{overflow-x:auto}
+.cd6-tabla{border-collapse:collapse;min-width:800px;width:100%}
+.cd6-tabla th{background:#eaf2f6;color:#29455e;font-size:12px;text-align:left;padding:12px 10px;white-space:nowrap}
+.cd6-tabla td{padding:11px 10px;border-bottom:1px solid #e4ebef;vertical-align:middle}
+.cd6-tabla tr:last-child td{border-bottom:0}
+.cd6-tabla td strong{font-weight:700}
+.cd6-estado{display:inline-block;background:#edf2f5;color:#35556a;border-radius:16px;padding:5px 8px;margin:2px;font-weight:700;font-size:11px;white-space:nowrap}
+.cd6-entregado,.cd6-aprobado{background:#e5f6ed;color:#196540}
+.cd6-vencido{background:#fff0e5;color:#9b4c16}
+.cd6-pendiente,.cd6-no_asignado{background:#edf2f5;color:#496174}
+.cd6-detalle h4{font-size:15px;margin:20px 0 11px;color:#173b55}
+.cd6-sobretitulo{font-size:11px;letter-spacing:1px;font-weight:800;color:#aa832e}
+.cd6-info{background:#f3f8fb;padding:15px;border-radius:9px}
+.cd6-error{background:#fff0ee;color:#932d2a;border:1px solid #efc0bd;padding:13px;border-radius:9px}
+.cd6-nota{color:#65798a;font-size:12px;line-height:1.55}
+.cd6-pestanas{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.cd6-pestanas button{border:1px solid #bfcfdc;background:#fff;border-radius:9px;color:#254c68;padding:12px 15px;font-weight:700;cursor:pointer}
+.cd6-pestanas button.cd6-pestana-activa{color:#fff;background:#173b55;border-color:#173b55}
+@media(max-width:1150px){.cd6-metricas{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.cd6-superior,.cd6-titulo-tabla{flex-direction:column;align-items:stretch}.cd6-metricas{grid-template-columns:repeat(2,minmax(0,1fr))}.cd6-superior select,.cd6-titulo-tabla input{width:100%;min-width:0}.cd6-hero{padding:20px}.cd6-panel{padding:16px}.cd6-acciones>*{flex:1}}
+@media(max-width:400px){.cd6-metricas{grid-template-columns:1fr}}

@@ -1,0 +1,41 @@
+/* Complemento de progreso. No reemplaza MiAprendizaje.css ni Dashboard.css. */
+.cd-aprendizaje .cd-aprendizaje-pasos button.cd-progreso-completado {
+  border-color: #90c6a4;
+  background: #e5f5ec;
+  color: #135b37;
+  font-weight: 800;
+}
+.cd-aprendizaje .cd-aprendizaje-pasos button:disabled {
+  cursor: not-allowed;
+  opacity: 0.50;
+}
+.cd-aprendizaje .cd-aprendizaje-pasos button.cd-progreso-completado:disabled {
+  opacity: 0.95;
+}
+.cd-progreso-etiqueta {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  color: #135b37;
+  background: #e5f5ec;
+  border: 1px solid #c0e2cf;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.cd-progreso-error,
+.cd-progreso-aviso {
+  border-radius: 0.6rem;
+  padding: 0.8rem 1rem;
+  line-height: 1.45;
+  margin: 1rem 0;
+}
+.cd-progreso-error {
+  color: #842b2b;
+  background: #fff1f0;
+  border: 1px solid #f2b8b3;
+}
+.cd-progreso-aviso {
+  color: #135b37;
+  background: #ecf9ef;
+  border: 1px solid #bde3ca;
+}

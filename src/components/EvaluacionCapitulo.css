@@ -1,0 +1,57 @@
+/* CENTINELA DIGITAL · Fase 4 · evaluación segura de capítulos */
+.cd-examen { color:#10243b; min-width:0; }
+.cd-examen-volver, .cd-examen-secundario { background:#fff; color:#173956; border:1px solid #d6e0e8; border-radius:8px; padding:11px 16px; font-weight:700; }
+.cd-examen-volver { margin-bottom:15px; }
+.cd-examen-cabecera { background:linear-gradient(105deg,#10243b,#24516f); color:white; border-radius:12px; padding:24px; display:flex; justify-content:space-between; gap:18px; align-items:start; }
+.cd-examen-sobretitulo { color:#e4bb52; letter-spacing:1.5px; font-size:11px; font-weight:800; }
+.cd-examen-cabecera h2 { margin:9px 0; font-size:clamp(19px,2.4vw,27px); color:white; }
+.cd-examen-cabecera p { color:#dbe6ee; line-height:1.55; margin:0; }
+.cd-examen-nota-minima { border:1px solid #ffffff3d; background:#ffffff15; border-radius:9px; padding:12px 15px; min-width:150px; font-size:12px; flex-shrink:0; }
+.cd-examen-nota-minima strong { display:block; font-size:22px; margin-top:5px; color:white; }
+.cd-examen-avance { margin:20px 0; }
+.cd-examen-avance-rotulo { display:flex; justify-content:space-between; gap:12px; color:#536d83; font-size:13px; font-weight:700; margin-bottom:8px; }
+.cd-examen-progreso { background:#e2e9ef; border-radius:100px; height:10px; overflow:hidden; }
+.cd-examen-progreso > div { background:#c9a84e; height:100%; transition:width .2s ease; }
+.cd-examen-navegacion { display:flex; gap:8px; flex-wrap:wrap; margin-top:15px; }
+.cd-examen-navegacion button { border-radius:50%; width:34px; height:34px; font-weight:800; border:1px solid #cbd8e3; color:#173956; background:#fff; }
+.cd-examen-navegacion button.respondida { background:#e7f5ed; color:#16643e; border-color:#9dceb2; }
+.cd-examen-navegacion button.activa { background:#10243b; color:white; border-color:#10243b; box-shadow:0 0 0 3px #c9a84e75; }
+.cd-examen-panel { padding:clamp(17px,3vw,30px); background:#fff; border:1px solid #d7e0e9; border-radius:12px; margin-top:15px; }
+.cd-examen-tipo { font-size:11px; color:#a6812b; font-weight:800; letter-spacing:1.5px; }
+.cd-examen-panel h3 { margin:12px 0 20px; font-size:clamp(18px,2.2vw,23px); line-height:1.45; }
+.cd-examen-ayuda { color:#5f7286; font-size:13px; margin:2px 0 14px; }
+.cd-examen-opciones { display:grid; gap:10px; }
+.cd-examen-opcion { display:flex; gap:12px; align-items:center; padding:13px 15px; border:1px solid #d9e3ea; border-radius:9px; cursor:pointer; line-height:1.5; background:#fff; }
+.cd-examen-opcion.elegida { border-color:#c9a84e; background:#fffaf0; }
+.cd-examen-opcion input { accent-color:#173956; min-width:17px; min-height:17px; }
+.cd-examen-opcion strong { color:#a6812b; min-width:18px; }
+.cd-examen-opcion span { flex:1; }
+.cd-examen-completar { display:grid; gap:10px; }
+.cd-examen-completar label { font-weight:700; }
+.cd-examen-completar input { width:100%; border-radius:8px; border:1px solid #cbd7e2; padding:13px 15px; font-size:16px; color:#10243b; background:white; box-sizing:border-box; }
+.cd-examen-ordenar { display:grid; gap:10px; }
+.cd-examen-paso { display:flex; align-items:center; gap:12px; border:1px solid #d9e3ea; padding:10px 12px; background:#fafcff; border-radius:8px; }
+.cd-examen-paso-numero { display:grid; place-items:center; min-width:25px; height:25px; background:#10243b; color:white; border-radius:50%; font-size:12px; font-weight:800; }
+.cd-examen-paso-texto { flex:1; line-height:1.4; }
+.cd-examen-paso button { font-size:20px; width:36px; height:36px; background:white; border:1px solid #cdd9e2; border-radius:7px; color:#173956; }
+.cd-examen-paso button:disabled { opacity:.35; cursor:not-allowed; }
+.cd-examen-confirmar-orden { justify-self:start; border:1px solid #c9a84e; background:#faf3dc; color:#6e531c; font-weight:800; border-radius:8px; padding:11px 14px; }
+.cd-examen-acciones { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:26px; border-top:1px solid #e2e9f0; padding-top:20px; }
+.cd-examen-primario, .cd-examen-enviar { border:1px solid #c9a84e; background:#c9a84e; color:#10243b; border-radius:8px; padding:11px 17px; font-weight:800; }
+.cd-examen-acciones button:disabled, .cd-examen-enviar:disabled { opacity:.5; cursor:not-allowed; }
+.cd-examen-final { display:flex; align-items:center; justify-content:space-between; gap:15px; background:#fbf7e9; border:1px solid #eadcb5; border-radius:10px; padding:16px 20px; margin-top:17px; }
+.cd-examen-final p { margin:0; line-height:1.5; }
+.cd-examen-error { margin-top:16px; background:#fff1f0; color:#8a2d25; border:1px solid #f0bcb6; border-radius:8px; padding:14px 16px; }
+.cd-examen-resultado { margin-top:18px; text-align:center; background:#fff; border:1px solid #d9e3ea; border-radius:12px; padding:clamp(22px,4vw,42px); }
+.cd-examen-puntuacion { font-size:clamp(56px,8vw,88px); font-weight:800; color:#10243b; line-height:1.25; }
+.cd-examen-puntuacion span { font-size:25px; color:#667d91; }
+.cd-examen-estado-aprobado, .cd-examen-estado-pendiente { display:inline-block; padding:10px 16px; border-radius:99px; font-weight:800; }
+.cd-examen-estado-aprobado { background:#e5f5ec; color:#16643e; }
+.cd-examen-estado-pendiente { background:#fff1df; color:#8a5a21; }
+.cd-examen-resultado p { color:#526b81; line-height:1.65; }
+.cd-examen-pie-resultado { margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+.cd-evaluacion-invitacion { display:flex; align-items:center; justify-content:space-between; gap:20px; background:#f8f2dd; padding:18px 20px; border:1px solid #e5d1a1; border-radius:10px; margin-top:16px; }
+.cd-evaluacion-invitacion strong { color:#10243b; }
+.cd-evaluacion-invitacion p { color:#576b7d; font-size:13px; margin:5px 0 0; }
+.cd-evaluacion-invitacion button { background:#c9a84e; border:1px solid #c9a84e; color:#10243b; border-radius:8px; padding:12px 17px; font-weight:800; white-space:nowrap; }
+@media (max-width:750px) { .cd-examen-cabecera,.cd-examen-final,.cd-evaluacion-invitacion { flex-direction:column; align-items:stretch; } .cd-examen-nota-minima { min-width:0; } .cd-examen-paso { flex-wrap:wrap; } .cd-examen-acciones button { flex:1; } }

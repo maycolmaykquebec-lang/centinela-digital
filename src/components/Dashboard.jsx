@@ -1,6 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MisAulas from './MisAulas'
 import UnirseAula from './UnirseAula'
+import MiAprendizaje from './MiAprendizaje'
+import GestionTareas from './GestionTareas'
+import TareasAsignadas from './TareasAsignadas'
+import CalificacionesSeguimientoFase6 from './CalificacionesSeguimientoFase6'
+import Fase7Biblioteca from './Fase7Biblioteca'
+import Fase7Rotafolio from './Fase7Rotafolio'
+import Fase7Noticias from './Fase7Noticias'
+import Fase7RecursosInstructor from './Fase7RecursosInstructor'
+import { supabase } from '../lib/supabase'
 import './Dashboard.css'
 
 // Cada fotografía se encuentra en public/assets; Vite la publica desde /assets/.
@@ -54,6 +63,7 @@ export default function Dashboard({ sesion, perfil, capitulos = [], onLogout }) 
   const [pagina, setPagina] = useState('inicio')
   const [detalle, setDetalle] = useState(null)
   const [menuAbierto, setMenuAbierto] = useState(false)
+  const [capitulosAprobados, setCapitulosAprobados] = useState(new Set())
 
   const rol = String(perfil?.role ?? '').toLowerCase()
   const esInstructor = rol === 'instructor'
@@ -64,9 +74,29 @@ export default function Dashboard({ sesion, perfil, capitulos = [], onLogout }) 
   const rotuloPerfil = esAdmin ? 'ADMINISTRADOR' : esInstructor ? 'INSTRUCTOR' : 'TROPA'
   const MENU = esInstructor ? MENU_INSTRUCTOR : MENU_TROPA
 
-  // Estado visual provisional. Próximo paso: obtener desbloqueos REALES desde Supabase.
-  // Este control visual no reemplaza políticas RLS ni validaciones del servidor.
-  const puedeConsultar = (indice) => instructorAprobado || indice === 0
+  // Desbloqueo visual basado en aprobaciones reales: el servidor vuelve a validar el acceso.
+  const puedeConsultar = (indice) => instructorAprobado || indice === 0 ||
+    capitulosAprobados.has(capitulos[indice - 1]?.id)
+
+  useEffect(() => {
+    if (!sesion?.user?.id || esInstructor || esAdmin) return
+    let activo = true
+    async function cargarCapitulosAprobados() {
+      const { data, error } = await supabase
+        .from('chapter_results')
+        .select('chapter_id')
+        .eq('user_id', sesion.user.id)
+        .eq('passed', true)
+      if (error) {
+        // Mantenemos capítulos bloqueados ante un error, nunca habilitamos sin autorización.
+        console.warn('No se pudieron consultar los desbloqueos:', error.message)
+        return
+      }
+      if (activo) setCapitulosAprobados(new Set((data ?? []).map((registro) => registro.chapter_id)))
+    }
+    void cargarCapitulosAprobados()
+    return () => { activo = false }
+  }, [sesion?.user?.id, esInstructor, esAdmin])
 
   function navegar(destino) {
     setPagina(destino)
@@ -174,14 +204,13 @@ export default function Dashboard({ sesion, perfil, capitulos = [], onLogout }) 
       if (detalle !== null) {
         const capitulo = capitulos[detalle]
         if (!capitulo) return <p>No se encontró el capítulo seleccionado.</p>
-        return <section className="cd-panel">
-          <button type="button" className="cd-volver" onClick={() => setDetalle(null)}>← Volver a los nueve capítulos</button>
-          <p className="cd-numero">CAPÍTULO {String(detalle + 1).padStart(2, '0')} DE 09</p>
-          <h2>{capitulo.title}</h2>
-          <img className="cd-imagen-detalle" src={`/assets/${IMAGENES[detalle] ?? IMAGENES[0]}`} alt={`Imagen de ${capitulo.title}`} />
-          <p>{capitulo.summary || RESUMENES[detalle]}</p>
-          <div className="cd-aviso">Las lecciones interactivas y evaluaciones se incorporarán en otra fase. Esta vista no modifica tus notas ni tu progreso.</div>
-        </section>
+        return <MiAprendizaje
+          capitulo={capitulo}
+          esInstructor={esInstructor || esAdmin}
+          onVolver={() => setDetalle(null)}
+          onAprobado={(chapterId) => setCapitulosAprobados((anteriores) =>
+            new Set([...anteriores, chapterId]))}
+        />
       }
       return <>
         {encabezadoSeccion(esInstructor ? 'Contenido educativo' : 'Mi aprendizaje', 'Consulta los nueve capítulos de CENTINELA DIGITAL.')}
@@ -189,6 +218,35 @@ export default function Dashboard({ sesion, perfil, capitulos = [], onLogout }) 
       </>
     }
 
+    if (pagina === 'gestion' && esInstructor && instructorAprobado) {
+      return <GestionTareas />
+    }
+    if (pagina === 'calificaciones' && esInstructor && instructorAprobado) {
+      return <CalificacionesSeguimientoFase6 />
+    }
+    if (pagina === 'tareas' && !esInstructor && !esAdmin) {
+      return <TareasAsignadas />
+    }
+
+    /* FASE7_DEFINITIVA_REACT */
+    if (pagina === 'recursos' && esInstructor && instructorAprobado) {
+      return <Fase7RecursosInstructor capitulos={capitulos} />
+    }
+    if (pagina === 'rotafolio' && esInstructor && instructorAprobado) {
+      return <Fase7Rotafolio capitulos={capitulos} />
+    }
+    if (pagina === 'pdf' && !esInstructor && !esAdmin) {
+      return <Fase7Biblioteca tipo="pdf" capitulos={capitulos} />
+    }
+    if (pagina === 'audiovisual' && !esInstructor && !esAdmin) {
+      return <Fase7Biblioteca tipo="audiovisual" capitulos={capitulos} />
+    }
+    if (pagina === 'rotafolio' && !esInstructor && !esAdmin) {
+      return <Fase7Rotafolio capitulos={capitulos} />
+    }
+    if (pagina === 'noticias' && !esInstructor && !esAdmin) {
+      return <Fase7Noticias esInstructor={false} />
+    }
     if (pagina === 'perfil') {
       return <section className="cd-panel">
         <h2>Mi perfil · {rotuloPerfil}</h2>

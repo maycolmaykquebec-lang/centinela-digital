@@ -1,0 +1,44 @@
+/* CENTINELA DIGITAL — lectura de enseñanzas, paleta institucional */
+.cd-aprendizaje { color: #10243b; min-width: 0; }
+.cd-aprendizaje-volver { background: white; border: 1px solid #d9e1e8; color: #173956; border-radius: 7px; padding: 10px 14px; margin-bottom: 14px; font-weight: 700; }
+.cd-aprendizaje-portada { background: linear-gradient(105deg, #10243b, #24516f); color: #fff; border-radius: 12px; padding: 22px; display: flex; align-items: start; justify-content: space-between; gap: 20px; }
+.cd-aprendizaje-etiqueta { font-size: 10px; font-weight: 800; letter-spacing: 1.3px; color: #c9a84e; }
+.cd-aprendizaje-portada h2 { margin: 8px 0; color: #fff; font-size: clamp(20px, 2.4vw, 28px); }
+.cd-aprendizaje-portada p { margin: 0; color: #dde7ef; line-height: 1.6; font-size: 13px; }
+.cd-aprendizaje-contador { display: inline-block; flex: none; background: #ffffff20; color: white; border-radius: 30px; padding: 9px 14px; font-size: 12px; font-weight: 800; }
+.cd-aprendizaje-mensaje, .cd-aprendizaje-error { margin-top: 16px; padding: 22px; background: #fff; border: 1px solid #d9e1e8; border-radius: 10px; line-height: 1.6; }
+.cd-aprendizaje-error { border-left: 4px solid #bc4f4b; }
+.cd-aprendizaje-barra-superior { display: flex; justify-content: space-between; gap: 12px; margin: 20px 0 8px; font-size: 12px; color: #60758b; }
+.cd-aprendizaje-barra { background: #e0e8ef; height: 9px; border-radius: 20px; overflow: hidden; }
+.cd-aprendizaje-barra > div { background: #c9a84e; height: 100%; border-radius: inherit; transition: width 160ms ease; }
+.cd-aprendizaje-pasos { display: flex; gap: 12px; margin: 17px 0; flex-wrap: wrap; }
+.cd-aprendizaje-pasos button { width: 37px; height: 37px; border: 1px solid #d9e1e8; background: white; color: #173956; border-radius: 50%; font-weight: 800; }
+.cd-aprendizaje-pasos button.activo { background: #10243b; border-color: #10243b; color: #fff; box-shadow: 0 0 0 3px #c9a84e65; }
+.cd-aprendizaje-leccion { background: white; border: 1px solid #d9e1e8; border-radius: 12px; padding: clamp(17px, 3vw, 30px); }
+.cd-aprendizaje-leccion-cabecera { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.cd-aprendizaje-leccion h3 { color: #10243b; font-size: clamp(19px, 2.5vw, 25px); margin: 8px 0 18px; }
+.cd-aprendizaje-publicada, .cd-aprendizaje-borrador { font-size: 11px; font-weight: 800; padding: 6px 10px; border-radius: 20px; }
+.cd-aprendizaje-publicada { background: #e8f5ec; color: #16653b; }
+.cd-aprendizaje-borrador { background: #fbf3dc; color: #806025; }
+.cd-aprendizaje-imagen-marco { background: #f7f9fa; border: 1px solid #e0e7ed; border-radius: 10px; padding: 12px; display: grid; place-items: center; min-height: 170px; }
+.cd-aprendizaje-imagen-marco img { display: block; width: 100%; max-width: 800px; max-height: 520px; object-fit: contain; border-radius: 6px; }
+.cd-aprendizaje-imagen-vacia { color: #66798d; font-size: 13px; text-align: center; }
+.cd-aprendizaje-leccion h4 { font-size: 16px; margin: 23px 0 8px; }
+.cd-aprendizaje-explicacion { font-size: 15px; line-height: 1.8; color: #30455a; margin: 0; white-space: pre-line; }
+.cd-aprendizaje-recuerda { background: #fbf7e9; border-left: 4px solid #c9a84e; border-radius: 6px; padding: 15px 18px; margin-top: 22px; color: #5e4e27; }
+.cd-aprendizaje-recuerda strong { font-size: 13px; }
+.cd-aprendizaje-recuerda p { line-height: 1.65; margin: 5px 0 0; }
+.cd-aprendizaje-acciones { border-top: 1px solid #e2e9ef; padding-top: 22px; margin-top: 26px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.cd-aprendizaje-acciones button { border-radius: 7px; padding: 11px 16px; font-weight: 800; }
+.cd-aprendizaje-anterior { border: 1px solid #d9e1e8; background: white; color: #10243b; }
+.cd-aprendizaje-siguiente { border: 1px solid #c9a84e; background: #c9a84e; color: #10243b; }
+.cd-aprendizaje-acciones button:disabled { opacity: .45; cursor: not-allowed; }
+.cd-aprendizaje-acciones span { color: #728193; font-size: 12px; }
+.cd-aprendizaje-nota { color: #66798d; font-size: 12px; line-height: 1.6; margin: 16px 0; }
+@media (max-width: 640px) {
+  .cd-aprendizaje-portada { flex-direction: column; }
+  .cd-aprendizaje-barra-superior { flex-direction: column; gap: 4px; }
+  .cd-aprendizaje-acciones { flex-wrap: wrap; }
+  .cd-aprendizaje-acciones button { flex: 1; }
+  .cd-aprendizaje-pasos { justify-content: center; }
+}
