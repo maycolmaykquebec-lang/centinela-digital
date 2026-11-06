@@ -37,7 +37,7 @@ const RESUMENES = [
   'Saberes tradicionales vinculados al cuidado de la salud.',
 ]
 
-const MENU_TROPA = [
+const MENU_INSTRUIDO = [
   { id: 'inicio', icono: '⌂', nombre: 'Inicio' },
   { id: 'aprendizaje', icono: '▤', nombre: 'Mi aprendizaje' },
   { id: 'tareas', icono: '✓', nombre: 'Tareas asignadas' },
@@ -71,8 +71,8 @@ export default function Dashboard({ sesion, perfil, capitulos = [], onLogout }) 
   const estado = String(perfil?.approval_status ?? '').toLowerCase()
   const instructorAprobado = esAdmin || (esInstructor && (estado === 'approved' || estado === 'aprobado'))
   const nombre = [perfil?.first_name, perfil?.last_name].filter(Boolean).join(' ').trim()
-  const rotuloPerfil = esAdmin ? 'ADMINISTRADOR' : esInstructor ? 'INSTRUCTOR' : 'TROPA'
-  const MENU = esInstructor ? MENU_INSTRUCTOR : MENU_TROPA
+  const rotuloPerfil = esAdmin ? 'ADMINISTRADOR' : esInstructor ? 'INSTRUCTOR' : 'INSTRUIDO'
+  const MENU = esInstructor ? MENU_INSTRUCTOR : MENU_INSTRUIDO
 
   // Desbloqueo visual basado en aprobaciones reales: el servidor vuelve a validar el acceso.
   const puedeConsultar = (indice) => instructorAprobado || indice === 0 ||
@@ -184,7 +184,7 @@ export default function Dashboard({ sesion, perfil, capitulos = [], onLogout }) 
         <section className="cd-mision">
           <span className="cd-estrella">✦</span>
           <div>
-            <small>LA RUTA DEL CENTINELA · PANEL TROPA</small>
+            <small>LA RUTA DEL CENTINELA · PANEL INSTRUIDO</small>
             <h2>Aprender. Practicar. Proteger.</h2>
             <p>Bienvenido, {nombre || 'participante'}. Continúa tu formación con lecciones, práctica y seguimiento académico.</p>
           </div>

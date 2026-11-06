@@ -1,0 +1,25 @@
+import { useState } from 'react'
+import Fase7Biblioteca from './Fase7Biblioteca'
+import Fase7Noticias from './Fase7Noticias'
+import './Fase7Definitiva.css'
+
+export default function Fase7RecursosInstructor({ capitulos = [] }) {
+  const [pestana, setPestana] = useState('pdf')
+  return <div>
+    <div className="c7-pestanas">
+      {[
+        ['pdf', 'Biblioteca PDF (9)'],
+        ['audiovisual', 'Enlaces audiovisuales'],
+        ['noticias', 'Noticias para aulas'],
+      ].map(([id, label]) => <button key={id} type="button"
+        className={pestana === id ? 'c7-pestana c7-activa' : 'c7-pestana'}
+        onClick={() => setPestana(id)}>{label}</button>)}
+    </div>
+    {pestana === 'pdf' && <>
+      <Fase7Biblioteca tipo="pdf" capitulos={capitulos} />
+      <p className="c7-nota">Los nueve PDF se incorporarán en una siguiente carga institucional. Por seguridad, publicar sus rutas requiere autorización de administración; no se crean archivos PDF ficticios.</p>
+    </>}
+    {pestana === 'audiovisual' && <Fase7Biblioteca tipo="audiovisual" capitulos={capitulos} />}
+    {pestana === 'noticias' && <Fase7Noticias esInstructor />}
+  </div>
+}

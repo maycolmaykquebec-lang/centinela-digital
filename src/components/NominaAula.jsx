@@ -90,8 +90,8 @@ export default function NominaAula({ aulaId, titulo, onCerrar }) {
       <div className="cd-nomina-cabecera">
         <div>
           <span className="cd-nomina-etiqueta">REGISTRO INSTITUCIONAL</span>
-          <h3>Nómina de TROPA — {titulo}</h3>
-          <p>Personal inscrito, ordenado por número de tropa (01 al 81).</p>
+          <h3>Nómina de INSTRUIDO — {titulo}</h3>
+          <p>Personal inscrito, ordenado por número de instruido (01 al 81).</p>
         </div>
         <div className="cd-nomina-acciones">
           <button type="button" onClick={() => setVersion((valor) => valor + 1)} disabled={cargando}>

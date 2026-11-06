@@ -7,7 +7,7 @@ import EvaluacionCapitulo from './EvaluacionCapitulo'
 /**
  * Lector de enseñanzas de CENTINELA DIGITAL.
  * - INSTRUCTOR: vista previa, sin registrar avance.
- * - TROPA: guarda una enseñanza al continuar (o finalizar la última).
+ * - INSTRUIDO: guarda una enseñanza al continuar (o finalizar la última).
  * - Supabase valida la sesión, la publicación y el orden mediante RLS + trigger.
  * - No calcula notas ni desbloquea capítulos: esas funciones se desarrollarán después.
  */
@@ -145,7 +145,7 @@ export default function MiAprendizaje({ capitulo, esInstructor = false, onVolver
 
     try {
       if (!completadas.has(leccion.id)) {
-        // INSERT (no UPSERT): la tabla no concede UPDATE a TROPA.
+        // INSERT (no UPSERT): la tabla no concede UPDATE a INSTRUIDO.
         // El trigger de Supabase verifica publicación y secuencia de enseñanzas.
         const { error: errorInsertar } = await supabase
           .from('lesson_progress')
@@ -201,7 +201,7 @@ export default function MiAprendizaje({ capitulo, esInstructor = false, onVolver
       <div className="cd-aprendizaje-portada">
         <div>
           <span className="cd-aprendizaje-etiqueta">
-            {esInstructor ? 'CONTENIDO EDUCATIVO · VISTA DEL INSTRUCTOR' : 'MI APRENDIZAJE · PANEL TROPA'}
+            {esInstructor ? 'CONTENIDO EDUCATIVO · VISTA DEL INSTRUCTOR' : 'MI APRENDIZAJE · PANEL INSTRUIDO'}
           </span>
           <h2>Capítulo {String(capitulo.id).padStart(2, '0')}: {capitulo.title}</h2>
           <p>{capitulo.summary || 'Aprendizaje para la formación del Centinela de la Salud.'}</p>

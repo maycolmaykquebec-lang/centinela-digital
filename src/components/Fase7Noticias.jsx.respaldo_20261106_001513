@@ -1,0 +1,160 @@
+import { useCallback, useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
+import './Fase7Definitiva.css'
+
+function fecha(valor) {
+  if (!valor) return '—'
+  const f = new Date(valor)
+  return Number.isNaN(f.getTime()) ? '—' : f.toLocaleString('es-BO')
+}
+
+export default function Fase7Noticias({ esInstructor = false }) {
+  const [aulas, setAulas] = useState([])
+  const [aulaId, setAulaId] = useState('')
+  const [noticias, setNoticias] = useState([])
+  const [titulo, setTitulo] = useState('')
+  const [cuerpo, setCuerpo] = useState('')
+  const [publicar, setPublicar] = useState(false)
+  const [editando, setEditando] = useState(null)
+  const [cargando, setCargando] = useState(true)
+  const [guardando, setGuardando] = useState(false)
+  const [error, setError] = useState('')
+  const [exito, setExito] = useState('')
+
+  useEffect(() => {
+    if (!esInstructor) return
+    let vigente = true
+    async function cargarAulas() {
+      const { data, error: fallo } = await supabase.rpc('centinela_task_my_classrooms')
+      if (!vigente) return
+      if (fallo) setError(fallo.message)
+      else {
+        setAulas(data || [])
+        setAulaId((id) => data?.some((a) => a.id === id) ? id : (data?.[0]?.id || ''))
+      }
+    }
+    void cargarAulas()
+    return () => { vigente = false }
+  }, [esInstructor])
+
+  const cargarNoticias = useCallback(async () => {
+    if (esInstructor && !aulaId) { setNoticias([]); setCargando(false); return }
+    setCargando(true)
+    let consulta = supabase.from('centinela7_news')
+      .select('id,classroom_id,title,body,published,created_at')
+      .order('created_at', { ascending: false }).limit(150)
+    if (esInstructor) consulta = consulta.eq('classroom_id', aulaId)
+    else consulta = consulta.eq('published', true)
+    const { data, error: fallo } = await consulta
+    setError(fallo?.message || '')
+    setNoticias(data || [])
+    setCargando(false)
+  }, [esInstructor, aulaId])
+  useEffect(() => { void cargarNoticias() }, [cargarNoticias])
+
+  function limpiar() {
+    setEditando(null); setTitulo(''); setCuerpo(''); setPublicar(false)
+    setError(''); setExito('')
+  }
+  function comenzarEdicion(n) {
+    setEditando(n.id); setTitulo(n.title); setCuerpo(n.body)
+    setPublicar(Boolean(n.published)); setError(''); setExito('')
+  }
+
+  async function guardar(evento) {
+    evento.preventDefault()
+    if (!esInstructor || guardando || !aulaId) return
+    const title = titulo.trim()
+    const body = cuerpo.trim()
+    if (title.length < 5 || title.length > 180 || body.length < 10) {
+      setError('El título debe tener entre 5 y 180 caracteres y el mensaje al menos 10.'); return
+    }
+    setGuardando(true); setError(''); setExito('')
+    try {
+      let resultado
+      if (editando) {
+        resultado = await supabase.from('centinela7_news')
+          .update({ title, body, published: publicar })
+          .eq('id', editando).eq('classroom_id', aulaId).select('id').maybeSingle()
+      } else {
+        const { data: sesion, error: eAuth } = await supabase.auth.getUser()
+        if (eAuth || !sesion?.user?.id) throw new Error('No se pudo verificar tu sesión.')
+        resultado = await supabase.from('centinela7_news').insert({
+          classroom_id: aulaId,
+          instructor_id: sesion.user.id,
+          title, body, published: publicar,
+        }).select('id').maybeSingle()
+      }
+      if (resultado.error) throw resultado.error
+      if (!resultado.data) throw new Error('Supabase no confirmó que la noticia se guardara.')
+      limpiar()
+      setExito('Noticia guardada correctamente.')
+      await cargarNoticias()
+    } catch (e) { setError(e.message || 'No se pudo guardar la noticia.') }
+    finally { setGuardando(false) }
+  }
+
+  async function borrar(n) {
+    if (!esInstructor || !window.confirm(`¿Eliminar definitivamente «${n.title}»?`)) return
+    setError(''); setExito('')
+    const { data, error: fallo } = await supabase.from('centinela7_news')
+      .delete().eq('id', n.id).eq('classroom_id', aulaId).select('id').maybeSingle()
+    if (fallo || !data) setError(fallo?.message || 'No se pudo eliminar la noticia.')
+    else {
+      if (editando === n.id) limpiar()
+      setExito('Noticia eliminada.')
+      await cargarNoticias()
+    }
+  }
+
+  return <section className="c7">
+    <header className="c7-hero">
+      <span>CENTINELA DIGITAL · INFORMACIÓN INSTITUCIONAL</span>
+      <h2>{esInstructor ? 'Noticias para mis aulas' : 'Noticias'}</h2>
+      <p>{esInstructor ? 'Redacta avisos para tus propias aulas. Los borradores no se muestran a la TROPA.' : 'Avisos publicados por los instructores de tus aulas.'}</p>
+    </header>
+    {esInstructor && <div className="c7-panel">
+      <label className="c7-etiqueta" htmlFor="c7-aula-noticia">Aula destinataria</label>
+      <select className="c7-select" id="c7-aula-noticia" value={aulaId}
+        onChange={(e) => { setAulaId(e.target.value); limpiar() }}>
+        {aulas.map((a) => <option key={a.id} value={a.id}>{a.title || a.name || a.classroom_title || a.code || a.id}</option>)}
+      </select>
+      {!aulas.length && <p>No hay aulas disponibles. Crea un aula desde «Mis aulas» antes de publicar noticias.</p>}
+      {Boolean(aulaId) && <form className="c7-form" onSubmit={(e) => void guardar(e)}>
+        <h3>{editando ? 'Editar noticia' : 'Nueva noticia'}</h3>
+        <label className="c7-etiqueta" htmlFor="c7-titulo">Título</label>
+        <input id="c7-titulo" maxLength={180} minLength={5} required
+          value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+        <label className="c7-etiqueta" htmlFor="c7-cuerpo">Contenido</label>
+        <textarea id="c7-cuerpo" rows={5} minLength={10} maxLength={10000} required
+          value={cuerpo} onChange={(e) => setCuerpo(e.target.value)} />
+        <label className="c7-checkbox"><input type="checkbox" checked={publicar}
+          onChange={(e) => setPublicar(e.target.checked)} /> Publicar para la TROPA de esta aula</label>
+        <div className="c7-acciones">
+          <button type="submit" className="c7-boton" disabled={guardando}>{guardando ? 'Guardando…' : editando ? 'Guardar cambios' : 'Guardar noticia'}</button>
+          {editando && <button className="c7-boton c7-boton-claro" type="button" onClick={limpiar}>Cancelar edición</button>}
+        </div>
+      </form>}
+    </div>}
+    {error && <p role="alert" className="c7-error">{error}</p>}
+    {exito && <p role="status" className="c7-exito">{exito}</p>}
+    <div className="c7-panel">
+      <div className="c7-titulo-fila"><h3>{esInstructor ? 'Noticias del aula' : 'Avisos disponibles'}</h3>
+        <button type="button" className="c7-boton c7-boton-claro" onClick={() => void cargarNoticias()}>Actualizar</button></div>
+      {cargando && <p>Consultando noticias…</p>}
+      {!cargando && noticias.length === 0 && <p>{esInstructor ? 'Todavía no has creado noticias en esta aula.' : 'Por ahora no tienes noticias publicadas.'}</p>}
+      <div className="c7-lista">
+        {noticias.map((n) => <article key={n.id} className="c7-noticia">
+          <div className="c7-titulo-fila"><h3>{n.title}</h3>
+            {esInstructor && <span className={n.published ? 'c7-estado c7-listo' : 'c7-estado'}>{n.published ? 'Publicada' : 'Borrador'}</span>}</div>
+          <small>{fecha(n.created_at)}</small>
+          <p className="c7-noticia-cuerpo">{n.body}</p>
+          {esInstructor && <div className="c7-acciones">
+            <button type="button" className="c7-boton c7-boton-claro" onClick={() => comenzarEdicion(n)}>Editar</button>
+            <button type="button" className="c7-boton c7-boton-peligro" onClick={() => void borrar(n)}>Eliminar</button>
+          </div>}
+        </article>)}
+      </div>
+    </div>
+  </section>
+}

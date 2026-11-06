@@ -18,7 +18,7 @@ export default function TareasAsignadas() {
   useEffect(() => { void cargar() }, [cargar])
   if (seleccion) return <CuestionarioTarea assignment={seleccion} onVolver={() => { setSeleccion(null); void cargar() }} />
   return <section className="cd5">
-    <div className="cd5-titulo"><span>FASE 5 · PANEL TROPA</span><h2>Tareas asignadas</h2>
+    <div className="cd5-titulo"><span>FASE 5 · PANEL INSTRUIDO</span><h2>Tareas asignadas</h2>
       <p>Responde los cuestionarios A, B y C que tu instructor haya asignado a tus aulas. Se califican automáticamente sobre 100 puntos.</p></div>
     {cargando && <div className="cd5-panel">Consultando tareas...</div>}
     {error && <p className="cd5-error" role="alert">{error}</p>}

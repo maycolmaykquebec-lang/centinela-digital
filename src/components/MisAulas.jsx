@@ -196,7 +196,7 @@ export default function MisAulas({ instructorId }) {
                 <p><b>Pequeña Unidad:</b> {aula.small_unit || '—'}</p>
                 <p><b>Compañía:</b> {aula.company || '—'}</p>
                 <div className="cd-aulas-codigo">
-                  <span>Código para la TROPA</span>
+                  <span>Código para la INSTRUIDO</span>
                   <strong>{aula.code}</strong>
                   <button type="button" onClick={() => void copiarCodigo(aula.code)}>Copiar</button>
                 </div>
@@ -222,7 +222,7 @@ export default function MisAulas({ instructorId }) {
             onCerrar={() => setNominaAbierta(null)}
           />
         )}
-        <div className="cd-aviso">Comparte el código únicamente con la TROPA autorizada. La nómina muestra solo los marineros que Supabase permite consultar en tus aulas.</div>
+        <div className="cd-aviso">Comparte el código únicamente con la INSTRUIDO autorizada. La nómina muestra solo los marineros que Supabase permite consultar en tus aulas.</div>
       </div>
     </section>
   )

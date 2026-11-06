@@ -57,13 +57,13 @@ export default function UnirseAula({ userId, compacta = false }) {
       return
     }
     if (!Number.isInteger(numeroSeleccionado) || numeroSeleccionado < 1 || numeroSeleccionado > 81) {
-      setError('Selecciona un número de tropa entre 01 y 81.')
+      setError('Selecciona un número de instruido entre 01 y 81.')
       return
     }
 
     setEnviando(true)
     try {
-      // El servidor valida la cuenta TROPA aprobada, el código, el número y los duplicados.
+      // El servidor valida la cuenta INSTRUIDO aprobada, el código, el número y los duplicados.
       // Nunca enviamos user_id, instructor_id ni cambios de calificación desde React.
       const { data, error: fallo } = await supabase.rpc('centinela_join_classroom', {
         p_code: codigoLimpio,
@@ -74,7 +74,7 @@ export default function UnirseAula({ userId, compacta = false }) {
 
       setCodigo('')
       setNumero('')
-      setMensaje(`¡Inscripción correcta! Tu número de tropa es ${formatoNumero(numeroSeleccionado)}.`)
+      setMensaje(`¡Inscripción correcta! Tu número de instruido es ${formatoNumero(numeroSeleccionado)}.`)
       await cargarAulas()
     } catch (fallo) {
       setError(`No se pudo realizar la inscripción: ${fallo.message ?? 'Error desconocido'}`)
@@ -84,12 +84,12 @@ export default function UnirseAula({ userId, compacta = false }) {
   }
 
   return (
-    <section className={`cd-unirse ${compacta ? 'cd-unirse-compacta' : ''}`} aria-label="Inscripción a aulas de TROPA">
+    <section className={`cd-unirse ${compacta ? 'cd-unirse-compacta' : ''}`} aria-label="Inscripción a aulas de INSTRUIDO">
       <div className="cd-unirse-encabezado">
         <div>
-          <span className="cd-unirse-etiqueta">PANEL TROPA · GESTIÓN DE AULA</span>
+          <span className="cd-unirse-etiqueta">PANEL INSTRUIDO · GESTIÓN DE AULA</span>
           <h2>Mi aula</h2>
-          <p>Inscríbete utilizando el código proporcionado por tu instructor y selecciona tu número de tropa.</p>
+          <p>Inscríbete utilizando el código proporcionado por tu instructor y selecciona tu número de instruido.</p>
         </div>
         <button type="button" className="cd-unirse-actualizar" onClick={() => void cargarAulas()} disabled={cargando}>
           {cargando ? 'Consultando...' : '↻ Actualizar'}
@@ -142,7 +142,7 @@ export default function UnirseAula({ userId, compacta = false }) {
               />
             </label>
             <label className="cd-unirse-campo">
-              <span>Número de tropa (01–81) *</span>
+              <span>Número de instruido (01–81) *</span>
               <select name="numeroTropa" value={numero} onChange={(evento) => setNumero(evento.target.value)} required>
                 <option value="">Selecciona tu número</option>
                 {NUMEROS.map((valor) => (
@@ -154,7 +154,7 @@ export default function UnirseAula({ userId, compacta = false }) {
               {enviando ? 'Registrando...' : 'Unirme al aula'}
             </button>
           </form>
-          <p className="cd-unirse-nota">El instructor debe confirmarte qué número corresponde. Supabase impedirá que dos marineros ocupen el mismo número dentro de un aula.</p>
+          <p className="cd-unirse-nota">El instructor debe confirmarte qué número corresponde. Supabase impedirá que dos integrantes ocupen el mismo número dentro de un aula.</p>
           {mensaje && <div className="cd-unirse-exito" role="status">{mensaje}</div>}
           {error && <div className="cd-unirse-error" role="alert">{error}</div>}
         </div>

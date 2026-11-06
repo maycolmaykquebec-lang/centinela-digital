@@ -208,9 +208,9 @@ function App() {
       </header>
       <main className="principal">
         <section className="presentacion">
-          <span className="sobretitulo">FORMACIÓN INTERACTIVA</span>
-          <h2>El conocimiento también protege.</h2>
-          <p>Plataforma de aprendizaje para la formación integral de la tropa, con lecciones interactivas, evaluaciones y seguimiento académico.</p>
+          <span className="sobretitulo">PROGRAMA CENTINELA DE LA SALUD</span>
+          <h2>Capacitación integral para instructores de la Armada Boliviana.</h2>
+          <p>Plataforma de aprendizaje para la formación del personal de instructores, con lecciones interactivas, evaluaciones y seguimiento académico.</p>
           <div className="caracteristicas">
             <div>✓ Nueve capítulos de enseñanza</div>
             <div>✓ Actividades interactivas</div>
@@ -227,7 +227,7 @@ function App() {
           <form onSubmit={enviarFormulario}>
             {modo === 'registro' && <>
               <div className="roles">
-                <button type="button" className={rol === 'tropa' ? 'seleccionado' : ''} onClick={() => setRol('tropa')}>⚓ TROPA</button>
+                <button type="button" className={rol === 'tropa' ? 'seleccionado' : ''} onClick={() => setRol('tropa')}>⚓ INSTRUIDO</button>
                 <button type="button" className={rol === 'instructor' ? 'seleccionado' : ''} onClick={() => setRol('instructor')}>♙ INSTRUCTOR</button>
               </div>
               <label>Nombres</label><input name="first_name" required />
@@ -236,7 +236,10 @@ function App() {
               <label>Pequeña Unidad</label><input name="small_unit" required />
               <label>Compañía</label><input name="company" required />
               {rol === 'tropa' && <><label>Categoría</label><select name="category" required>
-                <option value="">Seleccione</option><option>Marinero</option><option>Alumno</option><option>Cadete</option><option>Premilitar</option>
+                <option value="">Seleccione</option><option>Comandante de Batallón</option>
+<option>Comandante de Compañía</option>
+<option>Comandante de Sección</option>
+<option>Comandante de Escuadra</option>
               </select></>}
               {rol === 'instructor' && <p className="aviso">Tu cuenta necesitará aprobación de un administrador.</p>}
             </>}
