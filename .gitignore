@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+FASE*_EXTRAIDA/
+*respaldo*
+*.bak
+LEEME_FASE*.txt
+LEEME_PASO_*.txt
+SQL_VISTA_PREVIA_INSTRUCTOR.sql
