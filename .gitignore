@@ -33,3 +33,5 @@ FASE*_EXTRAIDA/
 LEEME_FASE*.txt
 LEEME_PASO_*.txt
 SQL_VISTA_PREVIA_INSTRUCTOR.sql
+
+/supabase/.temp/
