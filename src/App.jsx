@@ -236,10 +236,11 @@ function App() {
               <label>Pequeña Unidad</label><input name="small_unit" required />
               <label>Compañía</label><input name="company" required />
               {rol === 'tropa' && <><label>Categoría</label><select name="category" required>
-                <option value="">Seleccione</option><option>Comandante de Batallón</option>
-<option>Comandante de Compañía</option>
-<option>Comandante de Sección</option>
-<option>Comandante de Escuadra</option>
+                <option value="">Seleccione</option>
+                <option value="Cadete">Cadete</option>
+                <option value="Alumno">Alumno</option>
+                <option value="Marinero">Marinero</option>
+                <option value="Premilitar">Premilitar</option>
               </select></>}
               {rol === 'instructor' && <p className="aviso">Tu cuenta necesitará aprobación de un administrador.</p>}
             </>}
@@ -252,6 +253,20 @@ function App() {
           {mensaje && <p className="aviso">{mensaje}</p>}
         </section>
       </main>
+
+      <footer
+        style={{
+          textAlign: 'center',
+          padding: '22px 16px',
+          fontSize: '13px',
+          lineHeight: '1.8',
+          color: '#64748b',
+          borderTop: '1px solid #e2e8f0'
+        }}
+      >
+        <div>© 2026 CENTINELA DIGITAL · Todos los derechos reservados.</div>
+        <div>Desarrollado por: <strong>TF CGON Yamil Mamani Quisbert</strong></div>
+      </footer>
     </div>
   )
 }

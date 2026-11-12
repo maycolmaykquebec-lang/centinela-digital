@@ -311,7 +311,12 @@ export default function Dashboard({ sesion, perfil, capitulos = [], onLogout }) 
         </aside>
         <main className="cd-contenido">{mostrarContenido()}</main>
       </div>
-      <footer className="cd-footer">CENTINELA DIGITAL · Aprender para servir, prevenir y proteger.</footer>
+      <footer className="cd-footer">
+        <div>CENTINELA DIGITAL · Aprender para servir, prevenir y proteger.</div>
+        <div>© 2026 CENTINELA DIGITAL · Todos los derechos reservados.</div>
+        <div>Desarrollado por: TF CGON Yamil Mamani Quisber</div>
+      </footer>
     </div>
+  
   )
 }
